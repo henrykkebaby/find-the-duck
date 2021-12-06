@@ -10,6 +10,7 @@ import LoginPresenter from "./presenters/loginPresenter"
 import { Routes, Route } from 'react-router-dom';
 import NavbarPresenter from './presenters/navbarPresenter';
 import RegisterPresenter from "./presenters/registerPresenter";
+import World from "./presenters/worldPresenter";
 import { collection, getDocs, doc, setDoc} from "firebase/firestore/lite"
 
 import {db} from "./firebase/firebase-config";
@@ -37,8 +38,8 @@ function App() {
   const model = new Model();
 
   return (
-   
-    
+    <World />
+    /*
    <Routes>
       <Route path="/" element={<div>
         <NavbarPresenter model={model} />
@@ -56,6 +57,7 @@ function App() {
      
       <Route path="/game" element={<Game model={model} />} />
     </Routes>   
+    */
   );
 }
 
