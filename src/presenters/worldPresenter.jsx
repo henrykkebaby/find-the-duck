@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { auth } from "../firebase/firebase-config";
 import { collection, getDocs, doc, setDoc } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
@@ -7,6 +7,16 @@ function WorldPresenter() {
 
     const [cursors, setCursors] = useState([]);
     const local = "Henrik";
+
+    //TIMER -----------------------------------------
+    useEffect(() => {
+    let interval = null;
+    interval = setInterval(() => {
+        GetData();  
+    }, 50);
+    return () => clearInterval(interval);
+    }, []);
+    //TIMER -----------------------------------------
 
     const GetData = async ()=>{
         const scoreCol = collection(db, "Positions");
@@ -32,7 +42,7 @@ function WorldPresenter() {
         person: person,
         PosX: PosX,
         PosY: PosY,
-    }).then(() => GetData());
+    })
     }
 
 
