@@ -38,7 +38,7 @@ function WorldPresenter() {
 
     return (<div>
         <div onMouseMoveCapture={(e) => SetData(e.clientX, e.clientY)} style={{position:"absolute", height:"500px", width:"500px", border:"2px solid black"}} />
-        {cursors.map((cursor) => {return <div style={{position:"absolute", top:cursor[0], left:cursor[1], height:"10px", width:"10px", border:"2px solid red"}} />})}
+        {cursors.map((cursor) => {return <div style={{position:"absolute", top:cursor[1], left:cursor[0], height:"10px", width:"10px", border:"2px solid red"}} />})}
     </div>
 
     )
