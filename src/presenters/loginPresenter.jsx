@@ -1,10 +1,13 @@
 import React,{useState} from 'react';
+import { useNavigate } from "react-router-dom";
 
 import Login from "../views/login";
 import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 
 function LoginPresenter(props) {
+
+  const navigate = useNavigate();
 
  const [loginEmail, setLoginEmail] = useState("")
  const [loginPassword, setLoginPassword] = useState("")
@@ -18,8 +21,10 @@ function LoginPresenter(props) {
  async function login(){
   
     try{
-      const user =  await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-      console.log(user)
+      const user =  await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      
+      navigate('/');
+      //console.log(user);
     }
 
     catch(error){

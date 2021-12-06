@@ -1,13 +1,17 @@
 import React, {useState} from 'react';
-import Register from "../views/register"
-import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth"
+import { useNavigate } from "react-router-dom";
+
+import Register from "../views/register";
+import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth";
 import { auth } from "../firebase/firebase-config"
 
 function RegisterPresenter(props) {
 
-const [registerEmail, setRegisterEmail] = useState("")
-const [registerPassword, setRegisterPassword] = useState("")
-const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const [registerEmail, setRegisterEmail] = useState("")
+  const [registerPassword, setRegisterPassword] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
 
 
 async function register(){
@@ -15,10 +19,10 @@ async function register(){
       setErrorMessage("");
     }
      
-     try{
+    try{
        const user =  await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
        
-     
+       navigate('/');
      }
  
      catch(error){
