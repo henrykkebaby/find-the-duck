@@ -6,6 +6,7 @@ import backgroundPic1 from '../localfiles/background1.jpg';
 import backgroundPic2 from '../localfiles/background2.jpg';
 import backgroundPic3 from '../localfiles/background3.jpg';
 import duckPic from '../localfiles/duck.png';
+import duckLoad from '../localfiles/321duck.mp4';
 
 //Firebase
 import {signOut} from "firebase/auth";
@@ -24,7 +25,6 @@ function GamePresenter(props) {
   //let localImgResults = [backgroundPic1, backgroundPic2, backgroundPic3];
   let localDuckPos = [Math.random()*480, Math.random()*480];
 
-
   //hooks
 
   const [duckPosX, setDuckPosX] = useState(localDuckPos[0]);
@@ -40,6 +40,9 @@ function GamePresenter(props) {
   const [height, setHeight] = useState(localBackground[0]);
   const [background, setBackground] = useState(null);
 
+  const [showVid, setShowVid] = useState("");
+  const [showGame, setShowGame] = useState("none");
+
   //firebase hooks
   const [user, setUser] = useState({});
 
@@ -52,13 +55,16 @@ function GamePresenter(props) {
     GameSource.searchImages("ducks").then((data)=>{setSearchResults(data); setBackground(data[0].contentUrl); } );
   }, []);
 
+
   // flags[0] = boolean trigger rerender
   function rerender(points, flags) {
+
     if(flags[0]){
 
+      setBackground(searchResults[localBackground[2]].contentUrl);
       setDuckPosX(localDuckPos[0]);
       setDuckPosY(localDuckPos[1]);
-      setBackground(searchResults[localBackground[2]].contentUrl);
+      
       setSeconds(30);
 
       if(round >= 3)
@@ -74,6 +80,16 @@ function GamePresenter(props) {
     }
     setScore(score + points);
   }
+
+
+  function endVideo(){
+    setShowVid("none");
+    setShowGame("");
+    
+    setSeconds(30);
+    setScore(0);
+  }
+
 
   //TIMER -----------------------------------------
   const [seconds, setSeconds] = useState(30);
@@ -143,9 +159,15 @@ function GamePresenter(props) {
         height={500 + "px"}
         width={500 + "px"}
         logout = {logout}
+        duckLoad = {duckLoad}
+        endVideo = {endVideo}
+        showVid = {showVid}
+        showGame = {showGame}
+       
     />
     <TimerView
         seconds = {seconds}
+        showTimer = {showGame}
       />
   </div>
 }

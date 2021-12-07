@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { Link } from 'react-router-dom';
+
 
 function GameView(props) {
   return (
     <div>
+        <div style={{display: props.showGame}}>
         <img style={{position:"absolute", userSelect:"none"}} height={props.height} width={props.width} src={props.background} onClick={() => props.missedDuck(-100, [false])} />
         <img style={{position:"absolute", top:props.posY, left:props.posX, userSelect:"none"}} height="50px" width="50px" src={props.duckPic} onClick={() => props.foundDuck(300, [true])}/>
         <p style={{position:"absolute", top:"490px", userSelect:"none"}} >ROUND {props.round}</p>
@@ -17,6 +20,15 @@ function GameView(props) {
                 LOG OUT
             </button>
         </Link>
+
+        <Link to="/" style={{position:"absolute", top:"700px"}}>
+            <button>
+                EXIT GAME
+            </button>
+        </Link>
+        </div>
+
+        <video autoPlay muted onEnded={()=> props.endVideo()} style={{position:"absolute", top: "0px", userSelect:"none", display: props.showVid}}> <source src= {props.duckLoad} type="video/mp4"/></video>
 
     </div>
     
