@@ -166,6 +166,7 @@ function GamePresenter(props) {
             <GameView 
               score={score}
               round={round}
+              roundMAX={CONF_ROUND}
               highscore={highscore}
               foundDuck={rerender}
               missedDuck={rerender}
