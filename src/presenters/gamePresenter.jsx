@@ -98,9 +98,9 @@ function GamePresenter(props) {
   }
 
   function startVideo(){
+    document.getElementById("duck321").play();
     setShowVid("");
     setShowGame("none");
-    document.getElementById("duck321").play();
     setTimerIsActive(false);
   }
 
