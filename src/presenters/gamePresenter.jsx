@@ -133,6 +133,7 @@ function GamePresenter(props) {
   }
   
   const SetData = async (newScore) =>{
+    if(!auth.currentUser) { return; }
     const person = auth.currentUser.email;
     const personString = String(person);
     const score = newScore;
