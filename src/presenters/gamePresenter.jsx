@@ -18,10 +18,15 @@ import { onAuthStateChanged} from "firebase/auth"
 
 function GamePresenter(props) {
 
+  //config
+  const CONF_ROUND = 5;
+  const CONF_TIME = 30;
+  const CONF_SEARCH = "wheres waldo pictures";
+
   //locals
   
   //height, width, BackgroundNumber, backgroundPic, localImgResults, 
-  let localBackground = [500, 500, Math.floor(Math.random() * 35)]; //change later to length of data
+  let localBackground = [500, 500]; //change later to length of data
   //let localImgResults = [backgroundPic1, backgroundPic2, backgroundPic3];
   let localDuckPos = [Math.random()*480, Math.random()*480];
 
@@ -46,13 +51,17 @@ function GamePresenter(props) {
   //firebase hooks
   const [user, setUser] = useState({});
 
+  function backgroundFunc(data) {
+    let newBackground = data[Math.floor(Math.random()*data.length)];
+    while(newBackground.contentUrl === null) { newBackground = data[Math.floor(Math.random()*data.length)]; }
+    setBackground(newBackground.contentUrl);
+  }
 
   //useEffect
   useEffect(() => {
     console.log("DuckPresenter Ready!");
     GetData();
-    //props.model.addObserver(() => { setHighscore(props.model.highscore); });
-    GameSource.searchImages("ducks").then((data)=>{setSearchResults(data); setBackground(data[0].contentUrl); } );
+    GameSource.searchImages(CONF_SEARCH).then((data)=>{setSearchResults(data); backgroundFunc(data); } );
   }, []);
 
 
@@ -60,16 +69,14 @@ function GamePresenter(props) {
   function rerender(points, flags) {
 
     if(flags[0]){
-
-      setBackground(searchResults[localBackground[2]].contentUrl);
+      backgroundFunc(searchResults);
       setDuckPosX(localDuckPos[0]);
       setDuckPosY(localDuckPos[1]);
-      
-      setSeconds(30);
+      startVideo();
+      setSeconds(CONF_TIME);
 
-      if(round >= 3)
+      if(round >= CONF_ROUND)
       {
-        //props.model.addHighscore(score + points);
         SetData(score + points);
         setRound(1);
         setScore(0);
@@ -86,21 +93,30 @@ function GamePresenter(props) {
     setShowVid("none");
     setShowGame("");
     
-    setSeconds(30);
-    setScore(0);
+    setSeconds(CONF_TIME);
+    setTimerIsActive(true);
+  }
+
+  function startVideo(){
+    setShowVid("");
+    setShowGame("none");
+    document.getElementById("duck321").play();
+    setTimerIsActive(false);
   }
 
 
   //TIMER -----------------------------------------
-  const [seconds, setSeconds] = useState(30);
+  const [seconds, setSeconds] = useState(CONF_TIME);
+  const [timerIsActive, setTimerIsActive] = useState(false);
   useEffect(() => {
     let interval = null;
     interval = setInterval(() => {
-      if(seconds <= 0){rerender(-500, [true]); setSeconds(30); }
+      if(!timerIsActive) {return;}
+      if(seconds <= 0){rerender(-500, [true]); setSeconds(CONF_TIME); }
       else{rerender(-5, [false]); setSeconds(seconds => seconds - 1); }     
     }, 1000);
     return () => clearInterval(interval);
-  }, [seconds, score]);
+  }, [seconds, score, timerIsActive]);
   //TIMER -----------------------------------------
 
   function compareScore(a,b){
@@ -137,7 +153,7 @@ function GamePresenter(props) {
     const person = auth.currentUser.email;
     const personString = String(person);
     const score = newScore;
-    //console.log("Set data is trying to set the score: " + score);
+
     await setDoc(doc(db, "scores", personString), { 
       score: score,
       person: person,
@@ -147,29 +163,28 @@ function GamePresenter(props) {
 
 
   return <div>
-      <GameView 
-        score={score}
-        round={round}
-        highscore={highscore}
-        foundDuck={rerender}
-        missedDuck={rerender}
-        background={background}
-        duckPic={duckPic} 
-        posX={duckPosX + "px"}
-        posY={duckPosY + "px"}
-        height={500 + "px"}
-        width={500 + "px"}
-        logout = {logout}
-        duckLoad = {duckLoad}
-        endVideo = {endVideo}
-        showVid = {showVid}
-        showGame = {showGame}
-       
-    />
-    <TimerView
-        seconds = {seconds}
-        showTimer = {showGame}
-      />
+            <GameView 
+              score={score}
+              round={round}
+              highscore={highscore}
+              foundDuck={rerender}
+              missedDuck={rerender}
+              background={background}
+              duckPic={duckPic} 
+              posX={duckPosX + "px"}
+              posY={duckPosY + "px"}
+              height={500 + "px"}
+              width={500 + "px"}
+              logout = {logout}
+              duckLoad = {duckLoad}
+              endVideo = {endVideo}
+              showVid = {showVid}
+              showGame = {showGame}
+            />
+            <TimerView
+              seconds = {seconds}
+              showTimer = {showGame}
+            />
   </div>
 }
 
