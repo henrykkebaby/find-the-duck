@@ -8,9 +8,7 @@ function Register(props) {
                 <h1>Register</h1>
                 <input type = "text" placeholder="Email..." onChange={(e) => {props.setRegisterEmail(e.target.value)}}/>
                 <input  type = "password" placeholder="Password..." onChange={(e) => {props.setRegisterPassword(e.target.value)}}/>
-                {props.errorMessage?alert(props.errorMessage)&& props.setErrorMessage(null):
-                ""
-                }
+                <span style={{color:"red"}}>{props.errorMessage}</span>
                 <button onClick = {() => props.register()}>Signup</button>
             </div>
 

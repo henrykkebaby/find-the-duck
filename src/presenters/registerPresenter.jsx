@@ -15,25 +15,35 @@ function RegisterPresenter(props) {
 
 
 async function register(){
-    if(errorMessage !== ""){
-      setErrorMessage("");
-    }
      
-    try{
-       const user =  await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-       
-       navigate('/');
-     }
- 
-     catch(error){
-       console.log(error.message)
-       if(error.message = "auth/weak-password")  setErrorMessage("Password should atleast be 6 characters long");
-       else if(error.message = "auth/email-already-in-use")  setErrorMessage("Email already in use");
+  try {
+    await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
+    setErrorMessage("");
+    navigate('/');
+  } catch(error) {
+
+      switch (error.message) {
+        case 'Firebase: Error (auth/internal-error).':
+          setErrorMessage('Please enter a valid Email and Password');
+          break;
+        case 'Firebase: Password should be at least 6 characters (auth/weak-password).':
+          setErrorMessage('Password needs to be atleast 6 characters long');
+          break;
+          case 'Firebase: Error (auth/invalid-email).':
+            setErrorMessage('Please enter a valid Email');
+            break;
+          case "Firebase: Error (auth/missing-email).":
+            setErrorMessage('Please enter a valid Email');
+            break;
+          case 'Firebase: Error (auth/email-already-in-use).':
+            setErrorMessage('Email is already in use');
+            break;
+        default:
+          setErrorMessage('Unknown Error');
+      }
       
-       
-     }
-   
-   }
+    }
+}
 
    
 return (
@@ -45,9 +55,7 @@ return (
             registerPassword = {registerPassword}
             setRegisterPassword = {setRegisterPassword}
             register = {register}
-            errorMessage = {errorMessage}
-            setErrorMessage = {setErrorMessage}
-            
+            errorMessage = {errorMessage}  
             />
         </div>
     )

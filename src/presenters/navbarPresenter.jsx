@@ -8,10 +8,10 @@ function NavbarPresenter() {
 
     async function logout(){
        await signOut(auth);
-      }
+    }
     onAuthStateChanged(auth, (currentUser) =>{
-        setUser(currentUser)
-      })
+        setUser(currentUser);
+    })
 
     return (
         <div>

@@ -6,11 +6,10 @@ import "../styles.css";
 function MainPage() {
     return (
         <div className = "mainPageContainer">
-           
-    <Link to = "/game">
-        <button>Play</button>
-    </Link>
-           <button>How to</button>
+            <Link to = "/game">
+                <button>Play</button>
+            </Link>
+            <button>How to</button>
         </div>
     )
 }
