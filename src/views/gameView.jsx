@@ -11,7 +11,7 @@ function GameView(props) {
             <img style={{position:"absolute", top:props.posY, left:props.posX, userSelect:"none"}} height="22px" width="20px" src={props.duckPic} onClick={() => props.foundDuck(300, [true])}/>
         </div>
 
-        <p style={{position:"absolute", top:"490px", userSelect:"none"}} >ROUND {props.round}</p>
+        <p style={{position:"absolute", top:"490px", userSelect:"none"}} >ROUND {props.round} OF {props.roundMAX}</p>
         <p style={{position:"absolute", top:"520px", userSelect:"none", display:props.showGame}} >SCORE {props.score}</p>
 
         <p style={{position:"absolute", top:"620px", userSelect:"none"}} >HIGHSCORE {props.highscore.toString()}</p>
