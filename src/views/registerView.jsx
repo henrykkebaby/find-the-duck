@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Register(props) {
+function RegisterView(props) {
     return (
         <div className = "registerContainer">
 
@@ -16,4 +16,4 @@ function Register(props) {
     )
 }
 
-export default Register;
+export default RegisterView;

@@ -8,10 +8,11 @@ import backgroundPic3 from '../localfiles/background3.jpg';
 import duckPic from '../localfiles/duck.png';
 import duckLoad from '../localfiles/321duck.mp4';
 
+
 //Firebase
 import {signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore/lite";
+import { collection, getDocs, doc, setDoc, updateDoc } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
 import { onAuthStateChanged} from "firebase/auth"
 
@@ -19,9 +20,9 @@ import { onAuthStateChanged} from "firebase/auth"
 function GamePresenter(props) {
 
   //config
-  const CONF_ROUND = 5;
-  const CONF_TIME = 30;
-  const CONF_SEARCH = "wheres waldo pictures";
+  const CONF_ROUND = 3;
+  const CONF_TIME = 15;
+  const CONF_SEARCH = "ducks";
 
   //locals
   
@@ -38,6 +39,7 @@ function GamePresenter(props) {
   const [round, setRound] = useState(1);
   const [score, setScore] = useState(0);
   const [highscore, setHighscore] = useState([]);
+  const [personalHighscore, setPersonalHighscore] = useState([0]);
 
   const [searchResults, setSearchResults] = useState(null);
 
@@ -48,12 +50,16 @@ function GamePresenter(props) {
   const [showVid, setShowVid] = useState("");
   const [showGame, setShowGame] = useState("none");
 
+  const [error, setError] = useState(null);
+
   //firebase hooks
   const [user, setUser] = useState({});
 
   function backgroundFunc(data) {
     let newBackground = data[Math.floor(Math.random()*data.length)];
-    while(newBackground.contentUrl === null) { newBackground = data[Math.floor(Math.random()*data.length)]; }
+    console.log("hello");
+    while(newBackground.contentUrl === null) {console.log("tja");  newBackground = data[Math.floor(Math.random()*data.length)]; }
+    console.log("hello again");
     setBackground(newBackground.contentUrl);
   }
 
@@ -63,6 +69,10 @@ function GamePresenter(props) {
     GetData();
     GameSource.searchImages(CONF_SEARCH).then((data)=>{setSearchResults(data); backgroundFunc(data); } );
   }, []);
+
+
+  
+
 
 
   // flags[0] = boolean trigger rerender
@@ -137,26 +147,29 @@ function GamePresenter(props) {
     
     let highscore_length = 10;
     let highscore_list = [];
+    let foundPersonalHighscore = !auth.currentUser;
     if(scoreList.length < 10) { highscore_length = scoreList.length; }
 
     scoreList.sort(compareScore).map(function(item) {
-      highscore_list.push([item.person, item.score]);
-      highscore_length = highscore_length - 1;
-      if(highscore_list <= 0) { return; }
+      //If we are logged in we are searching for our personal highscore
+      if(!foundPersonalHighscore && item.person === auth.currentUser.email) {setPersonalHighscore(item.score); foundPersonalHighscore = true; }
+      //If we found the personal highscore and the highscore list we leave
+      if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore(highscore_list); return; }
+      //If we still arent done with the highscore list we run this
+      if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
     });
-
-    setHighscore(highscore_list);
   }
   
   const SetData = async (newScore) =>{
-    if(!auth.currentUser) { return; }
+    if(!auth.currentUser) { if(newScore > personalHighscore) {setPersonalHighscore(newScore);} GetData(); return; } //If we arent logged in we set score locally and leave
+    if(newScore <= personalHighscore) { GetData(); return; } //If the score wasnt higher that personal best we leave
+
     const person = auth.currentUser.email;
     const personString = String(person);
     const score = newScore;
 
-    await setDoc(doc(db, "scores", personString), { 
-      score: score,
-      person: person,
+    await updateDoc(doc(db, "scores", personString), { 
+      score: score
     }).then(() => GetData());
   }
   //firebase --------------------------------------
@@ -168,6 +181,7 @@ function GamePresenter(props) {
               round={round}
               roundMAX={CONF_ROUND}
               highscore={highscore}
+              personalHighscore={personalHighscore}
               foundDuck={rerender}
               missedDuck={rerender}
               background={background}

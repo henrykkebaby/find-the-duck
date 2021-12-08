@@ -1,9 +1,10 @@
 import React,{useState} from 'react';
 import { useNavigate } from "react-router-dom";
 
-import Login from "../views/login";
+import LoginView from "../views/loginView";
 import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
+
 
 function LoginPresenter(props) {
 
@@ -18,6 +19,8 @@ function LoginPresenter(props) {
     setUser(currentUser);
   })
 
+
+  
   async function login(){
   
     try {
@@ -51,10 +54,9 @@ function LoginPresenter(props) {
       }
   }
 
-
     return (
         <div>
-            <Login
+            <LoginView
             model = {props.model}
             loginEmail = {loginEmail}
             setLoginEmail = {setLoginEmail}

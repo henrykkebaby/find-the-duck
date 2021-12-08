@@ -1,7 +1,7 @@
 import React from 'react'
 import "../styles.css";
 
-function LoginView(props) {
+function Login(props) {
     return (
         <div className = "loginContainer">
         
@@ -17,4 +17,4 @@ function LoginView(props) {
     )
 }
 
-export default LoginView;
+export default Login;

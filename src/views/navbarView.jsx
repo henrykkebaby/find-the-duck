@@ -2,7 +2,7 @@ import React from 'react'
 import "../styles.css"
 import { Link } from 'react-router-dom';
 
-function Navbar(props) {
+function NavbarView(props) {
     return (
         <div>
             <nav className="Navbar">
@@ -12,8 +12,8 @@ function Navbar(props) {
                 <ul>
                     {props.user?(<div className = "test">   {/* FIXA !!!!!!!  */}
                         {props.user.email}
-                        <li> <Link to = "/register" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Register</Link> </li>
-                        <button onClick = {props.logout}>Sign out</button>
+                        <li> <Link to = "/profile" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Profile</Link> </li>
+                        <li> <Link to = "/"><button onClick = {props.logout}>Sign out</button></Link> </li>
                         </div>)
                     : (
                         <div className ="test">
@@ -27,4 +27,4 @@ function Navbar(props) {
     )
 }
 
-export default Navbar
+export default NavbarView

@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import Navbar from '../views/navbar';
+import NavbarView from '../views/navbarView';
 import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth"
 import { auth } from "../firebase/firebase-config"
 function NavbarPresenter() {
@@ -15,7 +15,7 @@ function NavbarPresenter() {
 
     return (
         <div>
-            <Navbar
+            <NavbarView
             user = {user}
             logout = {logout}
             />

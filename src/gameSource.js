@@ -11,6 +11,7 @@ const  GameSource={   // JS object creation literal
      })
      .then(response=>{
             if(!response.ok){
+                
                 throw Error(response.statusText)
             }
             return response;

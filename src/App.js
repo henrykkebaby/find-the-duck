@@ -7,6 +7,8 @@ import LoginPresenter from "./presenters/loginPresenter"
 import { Routes, Route } from 'react-router-dom';
 import NavbarPresenter from './presenters/navbarPresenter';
 import RegisterPresenter from "./presenters/registerPresenter";
+import ProfilePresenter from "./presenters/profilePresenter";
+import TutorialPresenter from "./presenters/tutorialPresenter";
 
 function App() {
   
@@ -33,6 +35,20 @@ function App() {
         <div>
         <NavbarPresenter model={model} />
         <RegisterPresenter model = {model}/>
+        </div>
+      }/>
+
+      <Route path = "profile" element= {
+        <div>
+        <NavbarPresenter model={model} />
+        <ProfilePresenter model={model} />
+        </div>
+      }/>
+
+      <Route path = "tutorial" element= {
+        <div>
+        <NavbarPresenter model={model} />
+        <TutorialPresenter model={model} />
         </div>
       }/>
       
