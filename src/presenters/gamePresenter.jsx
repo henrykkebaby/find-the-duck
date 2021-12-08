@@ -7,6 +7,7 @@ import backgroundPic2 from '../localfiles/background2.jpg';
 import backgroundPic3 from '../localfiles/background3.jpg';
 import duckPic from '../localfiles/duck.png';
 import duckLoad from '../localfiles/321duck.mp4';
+import promiseNoData from '../views/promiseNoData';
 
 
 //Firebase
@@ -55,11 +56,11 @@ function GamePresenter(props) {
   //firebase hooks
   const [user, setUser] = useState({});
 
+  function handleImgError() {setBackground(backgroundPic1)} 
+
   function backgroundFunc(data) {
     let newBackground = data[Math.floor(Math.random()*data.length)];
-    console.log("hello");
-    while(newBackground.contentUrl === null) {console.log("tja");  newBackground = data[Math.floor(Math.random()*data.length)]; }
-    console.log("hello again");
+    while(newBackground.contentUrl === null) { newBackground = data[Math.floor(Math.random()*data.length)]; }
     setBackground(newBackground.contentUrl);
   }
 
@@ -69,11 +70,6 @@ function GamePresenter(props) {
     GetData();
     GameSource.searchImages(CONF_SEARCH).then((data)=>{setSearchResults(data); backgroundFunc(data); } );
   }, []);
-
-
-  
-
-
 
   // flags[0] = boolean trigger rerender
   function rerender(points, flags) {
@@ -195,6 +191,7 @@ function GamePresenter(props) {
               endVideo = {endVideo}
               showVid = {showVid}
               showGame = {showGame}
+              handleImgError= {handleImgError}
             />
             <TimerView
               seconds = {seconds}

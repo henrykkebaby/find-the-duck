@@ -7,7 +7,7 @@ function GameView(props) {
   return (
     <div>
         <div style={{display: props.showGame}}>
-            <img style={{position:"absolute", userSelect:"none"}} height={props.height} width={props.width} src={props.background} onClick={() => props.missedDuck(-100, [false])} />
+            <img style={{position:"absolute", userSelect:"none"}} height={props.height} width={props.width} src={props.background} onError={props.handleImgError} onClick={() => props.missedDuck(-100, [false])} />
             <img style={{position:"absolute", top:props.posY, left:props.posX, userSelect:"none"}} height="42px" width="40px" src={props.duckPic} onClick={() => props.foundDuck(300, [true])}/>
         </div>
 
