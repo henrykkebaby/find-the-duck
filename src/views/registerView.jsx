@@ -4,7 +4,7 @@ function RegisterView(props) {
     return (
         <div className = "registerContainer">
 
-            <div className = "fieldBox">
+            <div className = "fieldBox" onKeyDown={(e) => props.register(e)} >
                 <h1>Register</h1>
                 <input type = "text" placeholder="Email..." onChange={(e) => {props.setRegisterEmail(e.target.value)}}/>
                 <input  type = "password" placeholder="Password..." onChange={(e) => {props.setRegisterPassword(e.target.value)}}/>

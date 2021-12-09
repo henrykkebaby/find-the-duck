@@ -1,12 +1,10 @@
-import apiConfig from "./apiConfig"
-
 const  GameSource={   // JS object creation literal
     apiCall(params) {
     return fetch("https://bing-image-search1.p.rapidapi.com/images/"+params, {
              "method": "GET",              // HTTP method
              "headers": {                  // HTTP headers
                 "x-rapidapi-host": "bing-image-search1.p.rapidapi.com",
-                "x-rapidapi-key": "cf8ac1b558msh36ec5f17b755ac9p17e886jsne8e050f791c1",
+                "x-rapidapi-key": "7e55c27f08msh8c81fc9012b3cd6p130723jsnc06c6ea8151b",
             }
      })
      .then(response=>{

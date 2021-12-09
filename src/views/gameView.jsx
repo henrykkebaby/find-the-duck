@@ -6,21 +6,13 @@ import { Link } from 'react-router-dom';
 function GameView(props) {
   return (
     <div>
-        <div style={{display: props.showGame}}>
-            <img style={{position:"absolute", userSelect:"none"}} height={props.height} width={props.width} src={props.background} onError={props.handleImgError} onClick={() => props.missedDuck(-100, [false])} />
-            <img style={{position:"absolute", top:props.posY, left:props.posX, userSelect:"none"}} height="42px" width="40px" src={props.duckPic} onClick={() => props.foundDuck(300, [true])}/>
-        </div>
+        <img style={{position:"absolute", userSelect:"none"}} height={props.height} width={props.width} src={props.background} onError={props.handleImgError} onClick={() => props.rerender(-100, [false, false])} />
+        <img style={{position:"absolute", top:props.posY, left:props.posX, userSelect:"none"}} height={props.duckHeight} width={props.duckWidth} src={props.duckPic} onClick={() => props.rerender(300, [true, false])}/>
 
-        <p style={{position:"absolute", top:"490px", userSelect:"none"}} >ROUND {props.round} OF {props.roundMAX}</p>
-        <p style={{position:"absolute", top:"520px", userSelect:"none", display:props.showGame}} >SCORE {props.score}</p>
-        <p style={{position:"absolute", top:"620px", userSelect:"none"}} >PERSONAL HIGHSCORE {props.personalHighscore.toString()}</p>
-        <p style={{position:"absolute", top:"640px", userSelect:"none"}} >HIGHSCORE {props.highscore.toString()}</p>
-        
-        <Link to="/" style={{position:"absolute", top:"600px"}}>
-            <button onClick = {props.logout}>
-                LOG OUT
-            </button>
-        </Link>
+        <p style={{position:"absolute", top:"590px", userSelect:"none"}} >ROUND {props.round} OF {props.roundMAX}</p>
+        <p style={{position:"absolute", top:"620px", userSelect:"none"}} >SCORE {props.score}</p>
+        <p style={{position:"absolute", top:"720px", userSelect:"none"}} >PERSONAL HIGHSCORE {props.personalHighscore.toString()}</p>
+        <p style={{position:"absolute", top:"740px", userSelect:"none"}} >HIGHSCORE {props.highscore.toString()}</p>
 
         <Link to="/" style={{position:"absolute", top:"700px"}}>
             <button>
@@ -28,8 +20,19 @@ function GameView(props) {
             </button>
         </Link>
 
-
-        <video id="duck321" autoPlay muted onEnded={()=> props.endVideo()} style={{position:"absolute", top: "0px", userSelect:"none", display: props.showVid, height:"500px", width:"500px"}}> <source src= {props.duckLoad} type="video/mp4"/></video>
+        <div style={{display: props.showEnd, position:"absolute", userSelect:"none", backgroundColor:"yellow", height:props.height, width:props.width}}>
+            <p style={{fontSize: "50px"}}>QUACK! GAME OVER</p>
+            <p>Rounds played {props.roundMAX}</p>
+            <p>This round you scored: {props.score.toString()}</p>
+            <p>Your personal best: {props.personalHighscore.toString()}</p>
+            <button onClick={() =>{props.rerender(0, [true, true]);}}>PLAY AGAIN</button>
+            <Link to="/">
+                <button>
+                    EXIT GAME
+                </button>
+            </Link>
+        </div>
+        <video id="duck321" autoPlay muted onEnded={()=> {props.gameStateHandler(1); }} style={{position:"absolute", top: "0px", userSelect:"none", display: props.showVid, height:props.height, width:props.width}}> <source src= {props.duckLoad} type="video/mp4"/></video>
 
     </div>
     

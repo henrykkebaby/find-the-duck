@@ -5,7 +5,7 @@ function Login(props) {
     return (
         <div className = "loginContainer">
         
-            <div className = "fieldBox">
+            <div className = "fieldBox" onKeyDown={(e) => props.login(e)}>
                 <h1>Login</h1>
                 <input type = "text" placeholder="Email..." onChange={(e) => {props.setLoginEmail(e.target.value)}}/>
                 <input  type = "password" placeholder="Password..." onChange={(e) => {props.setLoginPassword(e.target.value)}}/>

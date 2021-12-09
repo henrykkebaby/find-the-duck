@@ -25,7 +25,11 @@ function RegisterPresenter(props) {
     });
   }
 
-  async function register(){
+  async function register(key){
+
+    if(key === null || key.code !== "Enter") {
+      return;
+    }
       
     try {
       await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
