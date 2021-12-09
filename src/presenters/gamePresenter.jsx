@@ -150,12 +150,13 @@ function GamePresenter(props) {
     if(scoreList.length < 10) { highscore_length = scoreList.length; }
 
     scoreList.sort(compareScore).map(function(item) {
+
       //If we are logged in we are searching for our personal highscore
       if(!foundPersonalHighscore && item.person === auth.currentUser.email) {setPersonalHighscore(item.score); foundPersonalHighscore = true; }
-      //If we found the personal highscore and the highscore list we leave
-      if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore(highscore_list); return; }
       //If we still arent done with the highscore list we run this
       if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
+      //If we found the personal highscore and the highscore list we leave
+      if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore(highscore_list); return; }
     });
   }
   
