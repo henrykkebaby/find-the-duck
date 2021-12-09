@@ -56,7 +56,7 @@ function GamePresenter(props) {
   //firebase hooks
   const [user, setUser] = useState({});
 
-  function handleImgError() {setBackground(backgroundPic1)} 
+  
 
   function backgroundFunc(data) {
     let newBackground = data[Math.floor(Math.random()*data.length)];
@@ -93,6 +93,9 @@ function GamePresenter(props) {
     }
     setScore(score + points);
   }
+
+
+  //function handleImgError() {rerender(0, [true])} ;
 
 
   function endVideo(){
@@ -171,7 +174,12 @@ function GamePresenter(props) {
   //firebase --------------------------------------
 
 
-  return <div>
+  return( 
+  promiseNoData(background)
+
+  ||
+  
+  <div>
             <GameView 
               score={score}
               round={round}
@@ -180,6 +188,7 @@ function GamePresenter(props) {
               personalHighscore={personalHighscore}
               foundDuck={rerender}
               missedDuck={rerender}
+              handleImgError= {() => backgroundFunc(searchResults)}
               background={background}
               duckPic={duckPic} 
               posX={duckPosX + "px"}
@@ -191,13 +200,13 @@ function GamePresenter(props) {
               endVideo = {endVideo}
               showVid = {showVid}
               showGame = {showGame}
-              handleImgError= {handleImgError}
             />
             <TimerView
               seconds = {seconds}
               showTimer = {showGame}
             />
   </div>
+  )
 }
 
 export default GamePresenter
