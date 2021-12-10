@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import { useNavigate } from "react-router-dom";
 
 import RegisterView from "../views/registerView";
-import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
-import { collection, getDocs, doc, setDoc, updateDoc } from "firebase/firestore/lite";
+import { doc, setDoc } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
 
 function RegisterPresenter(props) {

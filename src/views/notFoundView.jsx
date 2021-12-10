@@ -1,6 +1,6 @@
 import React from 'react';
-import "../styles.css";
 import { Link } from 'react-router-dom';
+import "../styles.css";
 
 function NotFoundView(props) {
     return (

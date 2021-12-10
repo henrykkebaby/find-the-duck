@@ -1,10 +1,9 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import LoginView from "../views/loginView";
-import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
-import { useEffect } from 'react/cjs/react.development';
 
 
 function LoginPresenter(props) {
@@ -16,18 +15,11 @@ function LoginPresenter(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState({});
 
-  /*
-  useEffect(() => {
-    this.addEventListener('keydown', this.handleKey);
-  }, []);
-  */
-
   onAuthStateChanged(auth, (currentUser) =>{
     setUser(currentUser);
   })
 
 
-  
   async function login(key){
     if(key === null || key.code !== "Enter") {
       return;

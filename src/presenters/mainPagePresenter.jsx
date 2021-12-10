@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React from 'react';
 import MainPageView from "../views/mainPageView.jsx";
 
 function MainPagePresenter(props) {

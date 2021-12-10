@@ -1,10 +1,7 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import GameView from '../views/gameView';
 import TimerView from '../views/timerView';
 import GameSource from "../gameSource";
-import backgroundPic1 from '../localfiles/background1.jpg';
-import backgroundPic2 from '../localfiles/background2.jpg';
-import backgroundPic3 from '../localfiles/background3.jpg';
 import duckPic from '../localfiles/duck.png';
 import duckLoad from '../localfiles/321duck.mp4';
 import promiseNoData from '../views/promiseNoData';
@@ -12,7 +9,7 @@ import promiseNoData from '../views/promiseNoData';
 //Firebase
 import {signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
-import { collection, getDocs, doc, setDoc, updateDoc } from "firebase/firestore/lite";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
 import { onAuthStateChanged} from "firebase/auth";
 

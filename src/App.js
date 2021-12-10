@@ -1,4 +1,3 @@
-import './App.css';
 import './styles.css';
 import Model from "./models/model";
 import Game from './presenters/gamePresenter';

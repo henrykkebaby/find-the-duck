@@ -1,10 +1,9 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ProfileView from "../views/profileView";
 
 //Firebase
-import {signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
-import { collection, getDocs, doc, setDoc, updateDoc  } from "firebase/firestore/lite";
+import { collection, getDocs, doc, updateDoc  } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
 import { onAuthStateChanged} from "firebase/auth";
 
