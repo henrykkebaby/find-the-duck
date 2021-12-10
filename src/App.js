@@ -2,13 +2,14 @@ import './App.css';
 import './styles.css';
 import Model from "./models/model";
 import Game from './presenters/gamePresenter';
-import MainPagePresenter from './presenters/mainPagePresenter.jsx';
-import LoginPresenter from "./presenters/loginPresenter"
+import MainPage from './presenters/mainPagePresenter.jsx';
+import Login from "./presenters/loginPresenter"
 import { Routes, Route } from 'react-router-dom';
-import NavbarPresenter from './presenters/navbarPresenter';
-import RegisterPresenter from "./presenters/registerPresenter";
-import ProfilePresenter from "./presenters/profilePresenter";
-import TutorialPresenter from "./presenters/tutorialPresenter";
+import Navbar from './presenters/navbarPresenter';
+import Register from "./presenters/registerPresenter";
+import Profile from "./presenters/profilePresenter";
+import Tutorial from "./presenters/tutorialPresenter";
+import NotFound from "./views/notFoundView"
 
 function App() {
   
@@ -19,40 +20,42 @@ function App() {
 
       <Route path="/" element={
         <div>
-          <NavbarPresenter model={model} />
-          <MainPagePresenter model={model}/>
+          <Navbar model={model} />
+          <MainPage model={model}/>
         </div>
       }/>
       
       <Route path = "login" element= {
         <div>
-        <NavbarPresenter model={model} />
-        <LoginPresenter model = {model}/>
+        <Navbar model={model} />
+        <Login model = {model}/>
         </div>
       }/>
 
       <Route path = "register" element= {
         <div>
-        <NavbarPresenter model={model} />
-        <RegisterPresenter model = {model}/>
+        <Navbar model={model} />
+        <Register model = {model}/>
         </div>
       }/>
 
       <Route path = "profile" element= {
         <div>
-        <NavbarPresenter model={model} />
-        <ProfilePresenter model={model} />
+        <Navbar model={model} />
+        <Profile model={model} />
         </div>
       }/>
 
       <Route path = "tutorial" element= {
         <div>
-        <NavbarPresenter model={model} />
-        <TutorialPresenter model={model} />
+        <Navbar model={model} />
+        <Tutorial model={model} />
         </div>
       }/>
       
       <Route path="/game" element={<Game model={model} />} />
+
+      <Route path="*" element={<NotFound />} />
 
     </Routes>   
   );
