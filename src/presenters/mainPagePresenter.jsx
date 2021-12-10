@@ -26,4 +26,4 @@ function MainPagePresenter(props) {
     )
 }
 
-export default MainPagePresenter
+export default MainPagePresenter;

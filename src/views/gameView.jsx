@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-
 function GameView(props) {
   return (
     <div>

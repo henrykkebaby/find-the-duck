@@ -6,7 +6,7 @@ import {signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 import { collection, getDocs, doc, setDoc, updateDoc  } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
-import { onAuthStateChanged} from "firebase/auth"
+import { onAuthStateChanged} from "firebase/auth";
 
 function ProfilePresenter(props) {
 
@@ -65,4 +65,4 @@ function ProfilePresenter(props) {
             />
 }
 
-export default ProfilePresenter
+export default ProfilePresenter;

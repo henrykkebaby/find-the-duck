@@ -1,7 +1,8 @@
-import React,{useState} from 'react'
+import React,{useState} from 'react';
 import NavbarView from '../views/navbarView';
-import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth"
-import { auth } from "../firebase/firebase-config"
+import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth";
+import { auth } from "../firebase/firebase-config";
+
 function NavbarPresenter() {
 
     const [user, setUser] = useState({});

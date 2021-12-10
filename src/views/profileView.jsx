@@ -15,4 +15,4 @@ function ProfileView(props) {
     )
 }
 
-export default ProfileView
+export default ProfileView;

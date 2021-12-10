@@ -14,7 +14,7 @@ import {signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 import { collection, getDocs, doc, setDoc, updateDoc } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
-import { onAuthStateChanged} from "firebase/auth"
+import { onAuthStateChanged} from "firebase/auth";
 
 
 function GamePresenter(props) {
@@ -231,4 +231,4 @@ function GamePresenter(props) {
   )
 }
 
-export default GamePresenter
+export default GamePresenter;

@@ -9,4 +9,4 @@ function TutorialPresenter(props) {
     
 }
 
-export default TutorialPresenter
+export default TutorialPresenter;

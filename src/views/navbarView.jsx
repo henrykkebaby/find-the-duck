@@ -1,5 +1,5 @@
-import React from 'react'
-import "../styles.css"
+import React from 'react';
+import "../styles.css";
 import { Link } from 'react-router-dom';
 
 function NavbarView(props) {
@@ -27,4 +27,4 @@ function NavbarView(props) {
     )
 }
 
-export default NavbarView
+export default NavbarView;

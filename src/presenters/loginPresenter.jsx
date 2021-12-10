@@ -80,4 +80,4 @@ function LoginPresenter(props) {
     )
 }
 
-export default LoginPresenter
+export default LoginPresenter;

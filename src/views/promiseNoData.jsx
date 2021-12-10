@@ -3,4 +3,4 @@ function promiseNoData(data){
         !data && <img src  ="http://www.csc.kth.se/~cristi/loading.gif"></img>
     )
 }
-export default promiseNoData
+export default promiseNoData;
