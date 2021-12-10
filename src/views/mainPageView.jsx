@@ -7,7 +7,7 @@ function MainPageView(props) {
         <div>
         <div className = "mainPageContainer">
    
-                <button className="mainbtn">
+                <button className="mainbtn" onClick={() => props.quack.play()}>
                     <div>
                             <span></span>
                      <Link to = "/game"> Play </Link>

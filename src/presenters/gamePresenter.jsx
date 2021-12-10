@@ -5,6 +5,8 @@ import GameSource from "../gameSource";
 import duckPic from '../localfiles/duck.png';
 import duckLoad from '../localfiles/321duck.mp4';
 import promiseNoData from '../views/promiseNoData';
+import quickquack from '../sounds/quickquack.wav';
+import doublequack from '../sounds/doublequack.wav';
 
 //Firebase
 import {signOut} from "firebase/auth";
@@ -29,7 +31,9 @@ function GamePresenter(props) {
   
   //let localImgResults = [backgroundPic1, backgroundPic2, backgroundPic3];
   let localDuckPos = [Math.random()*(CONF_BACKGROUND_WIDTH - CONF_DUCK_WIDTH), Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT)];
-
+  //duck audio
+  const quacks = [new Audio (quickquack), new Audio (doublequack)];
+  const quack = quacks[Math.floor(Math.random()*quacks.length)];
   //hooks
 
   //logic
@@ -220,6 +224,7 @@ function GamePresenter(props) {
               roundMAX={CONF_ROUND}
               highscore={highscore}
               personalHighscore={personalHighscore}
+              quack={quack}
             />
             <TimerView
               seconds = {seconds}

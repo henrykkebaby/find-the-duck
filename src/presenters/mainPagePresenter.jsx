@@ -1,7 +1,10 @@
 import React from 'react';
 import MainPageView from "../views/mainPageView.jsx";
+import quickquack from '../sounds/quickquack.wav';
 
 function MainPagePresenter(props) {
+
+    var quack = new Audio (quickquack);
 
     const duckFactArray = [
         "48% of people would rather fight a horse sized duck then 50 duck sized horses.",
@@ -20,7 +23,7 @@ function MainPagePresenter(props) {
     return (
         <div>
             <MainPageView
-                model={props.model} duckFact={duckFact}
+                model={props.model} duckFact={duckFact} quack={quack}
             />
         </div>
     )
