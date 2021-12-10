@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 function GameView(props) {
   return (
     <div>
+        {/* game screen */}
         <img style={{position:"absolute", userSelect:"none"}} height={props.height} width={props.width} src={props.background} onError={props.handleImgError} onClick={() => props.rerender(-100, [false, false])} />
         <img style={{position:"absolute", top:props.posY, left:props.posX, userSelect:"none"}} height={props.duckHeight} width={props.duckWidth} src={props.duckPic} onClick={() => props.rerender(300, [true, false])}/>
 
@@ -20,6 +21,7 @@ function GameView(props) {
             </button>
         </Link>
 
+        {/* end screen */}
         <div style={{display: props.showEnd, position:"absolute", userSelect:"none", backgroundColor:"yellow", height:props.height, width:props.width}}>
             <p style={{fontSize: "50px"}}>QUACK! GAME OVER</p>
             <p>Rounds played {props.roundMAX}</p>
@@ -32,6 +34,9 @@ function GameView(props) {
                 </button>
             </Link>
         </div>
+        
+        {/* load screen */}
+        <div style={{display: props.showVid, position:"absolute", userSelect:"none", backgroundColor:"#1a67ab", height:props.height, width:props.width}}></div>
         <video id="duck321" autoPlay muted onEnded={()=> {props.gameStateHandler(1); }} style={{position:"absolute", top: "0px", userSelect:"none", display: props.showVid, height:props.height, width:props.width}}> <source src= {props.duckLoad} type="video/mp4"/></video>
 
     </div>
