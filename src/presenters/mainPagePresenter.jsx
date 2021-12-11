@@ -1,8 +1,13 @@
-import React from 'react';
+import React,{useState} from 'react';
 import MainPageView from "../views/mainPageView.jsx";
 import quickquack from '../sounds/quickquack.wav';
-
+import { onAuthStateChanged} from "firebase/auth";
+import { auth } from "../firebase/firebase-config";
 function MainPagePresenter(props) {
+    const [user, setUser] = useState({});
+    onAuthStateChanged(auth, (currentUser) =>{
+      setUser(currentUser);
+    })
 
     var quack = new Audio (quickquack);
 
@@ -23,7 +28,7 @@ function MainPagePresenter(props) {
     return (
         <div>
             <MainPageView
-                model={props.model} duckFact={duckFact} quack={quack}
+                model={props.model} duckFact={duckFact} quack={quack} text = {user? "Play": "Guest"}
             />
         </div>
     )

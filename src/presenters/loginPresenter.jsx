@@ -21,7 +21,7 @@ function LoginPresenter(props) {
 
 
   async function login(key){
-    if(key === null || key.code !== "Enter") {
+    if(key === null || key.code !== "Enter" && key !== "clicked") {
       return;
     }
   

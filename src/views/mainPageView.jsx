@@ -10,7 +10,7 @@ function MainPageView(props) {
                 <button className="mainbtn" onClick={() => props.quack.play()}>
                     <div>
                             <span></span>
-                     <Link to = "/game"> Play </Link>
+                     <Link to = "/game">{props.text}</Link>
                      </div>
                 </button>
 
@@ -28,3 +28,4 @@ function MainPageView(props) {
 }
 
 export default MainPageView;
+

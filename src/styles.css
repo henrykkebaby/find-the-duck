@@ -237,3 +237,20 @@ body{
     display: flex;
     flex-direction: row;
   }
+
+
+  .test{
+    display: flex;
+    flex-direction: row;
+  }
+
+
+  .tutorialContainer{
+  position: fixed; 
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+
+
+  }

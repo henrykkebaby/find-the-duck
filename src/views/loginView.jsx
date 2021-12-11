@@ -10,7 +10,7 @@ function Login(props) {
                 <input type = "text" placeholder="Email..." onChange={(e) => {props.setLoginEmail(e.target.value)}}/>
                 <input  type = "password" placeholder="Password..." onChange={(e) => {props.setLoginPassword(e.target.value)}}/>
                 <p style={{color:"red"}}>{props.errorMessage}</p>
-                <button onClick = {() => props.login()}>Login</button> 
+                <button onClick = {() => props.login("clicked")}>Login</button> 
             </div>
 
         </div>
