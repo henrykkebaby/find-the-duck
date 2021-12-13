@@ -1,21 +1,22 @@
-import React,{useState} from 'react'
-import Navbar from '../views/navbar';
-import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth"
-import { auth } from "../firebase/firebase-config"
+import React, { useState } from 'react';
+import NavbarView from '../views/navbarView';
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase-config";
+
 function NavbarPresenter() {
 
     const [user, setUser] = useState({});
 
     async function logout(){
        await signOut(auth);
-      }
+    }
     onAuthStateChanged(auth, (currentUser) =>{
-        setUser(currentUser)
-      })
+        setUser(currentUser);
+    })
 
     return (
         <div>
-            <Navbar
+            <NavbarView
             user = {user}
             logout = {logout}
             />
