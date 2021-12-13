@@ -22,7 +22,7 @@ function ProfilePresenter(props) {
     onAuthStateChanged(auth, (currentUser) =>{ setUser(currentUser) })
 
     useEffect(() => {
-        if(!auth.currentUser) { navigate('/'); return; }
+        props.model.addObserver(() => { GetData(); });
         GetData();
     }, []);
 
@@ -35,9 +35,9 @@ function ProfilePresenter(props) {
     }
 
     const GetData = async ()=>{
-        const scoreCol = collection(db, "scores");
-        const scoreSnapshot = await getDocs(scoreCol);
-        const scoreList = scoreSnapshot.docs.map(doc=>doc.data());
+        if(props.model.firebaseData === null) { return; }
+        if(!auth.currentUser) { navigate('/'); return; };
+        const scoreList = props.model.firebaseData;
 
         scoreList.map(function(item) {
             if(item.person === auth.currentUser.email) {
@@ -53,6 +53,13 @@ function ProfilePresenter(props) {
         const person = auth.currentUser.email;
         const personString = String(person);
         const picture = profilePic;
+
+        if(props.model.firebaseData === null) { navigate('/'); return; }
+        const scoreList = props.model.firebaseData;
+
+        for (let i = 0; i < scoreList.length; i++) { 
+            if(scoreList[i].person === person) { scoreList[i].picture = picture; break; } 
+        }
     
         await updateDoc(doc(db, "scores", personString), {
           picture: picture
@@ -66,6 +73,7 @@ function ProfilePresenter(props) {
                 swap={swap}
                 saveChanges={SetData}
             />
+        
 }
 
 export default ProfilePresenter;

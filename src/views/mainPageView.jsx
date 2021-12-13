@@ -22,7 +22,7 @@ function MainPageView(props) {
                 </button>
 
         </div>
-            <p style={{background:"yellow", textAlign:"center"}}> {props.duckFact} </p>
+            <p className="funFact"> {props.duckFact} </p>
         </div>
     )
 }

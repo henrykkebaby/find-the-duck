@@ -1,12 +1,17 @@
 class Model{
 
-      constructor(observers=[], highscore=[]){
+      constructor(observers=[], firebaseData=null){
             this.observers = observers;
-            this.highscore = highscore;
+            this.firebaseData = firebaseData;
       }
 
-      addHighscore(score) {
-            this.highscore.push(score);
+      setfirebaseData(incomingData) {
+            this.firebaseData = incomingData;
+            this.notifyObservers();
+      }
+
+      addFirebaseData(incomingData) {
+            this.firebaseData.push(incomingData);
             this.notifyObservers();
       }
 
@@ -28,13 +33,3 @@ class Model{
 };
 
 export default Model;
-
-
-
-   
-
-
-
-
-
-
