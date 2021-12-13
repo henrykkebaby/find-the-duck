@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ProfileView from "../views/profileView";
+import { useNavigate } from "react-router-dom";
 
 //Firebase
 import { auth } from "../firebase/firebase-config";
@@ -8,6 +9,8 @@ import { db } from "../firebase/firebase-config";
 import { onAuthStateChanged} from "firebase/auth";
 
 function ProfilePresenter(props) {
+
+    const navigate = useNavigate();
 
     const [profilePic, setProfilePic] = useState(null);
     const [profileName, setProfileName] = useState(null);
@@ -19,6 +22,7 @@ function ProfilePresenter(props) {
     onAuthStateChanged(auth, (currentUser) =>{ setUser(currentUser) })
 
     useEffect(() => {
+        if(!auth.currentUser) { navigate('/'); return; }
         GetData();
     }, []);
 
