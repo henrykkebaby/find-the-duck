@@ -17,6 +17,10 @@ function MainPagePresenter(props) {
     useEffect(() => {
         props.model.addObserver(() => { GetData(); });
         GetData();
+
+        return () => {
+            props.model.removeObserver(() => { GetData(); });
+        };
     }, []);
 
 
@@ -36,7 +40,7 @@ function MainPagePresenter(props) {
             //If we still arent done with the highscore list we run this
             if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
             //If we found the personal highscore and the highscore list we leave
-            if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore(highscore_list); return; }
+            if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore([...highscore_list]); return; }
         });
     }
 
@@ -52,7 +56,7 @@ function MainPagePresenter(props) {
     var quack = new Audio (quickquack);
 
     const duckFactArray = [
-        "48% of people would rather fight a horse sized duck then 50 duck sized horses.",
+        "48% of people would rather fight a horse sized duck than 50 duck sized horses.",
         "A male duck is called a drake, and they started from the bottom now they here.",
         "Ducks can sleep with one eyed open to avoid being sneaked up upon.",
         "The highest flying duck was a mallard at 6400 meters.",

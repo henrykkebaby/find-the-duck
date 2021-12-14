@@ -31,10 +31,33 @@ function GamePresenter(props) {
   const CONF_DUCK_HEIGHT = 22;
   const CONF_DUCK_WIDTH = 20;
 
-  //locals
+
   
+  //locals
+ function getRandomPosDuck(rowOrCol){
+   if(document.getElementById("duckspace") != null){
+      if(rowOrCol === 0){
+        return Math.random()*(CONF_BACKGROUND_WIDTH - CONF_DUCK_WIDTH);
+      }
+      else{
+        return Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT) + document.getElementById("duckspace").getBoundingClientRect().top;
+      }
+    }
+ }
+  let localDuckPos = [getRandomPosDuck(0), getRandomPosDuck(1)];
+
+  const [hasDuck, setHasDuck] = useState(false);
+  const [div, setDiv] = useState(document.getElementById("duckspace"));
+  useEffect(() => {
+    //setDiv(document.getElementById("duckspace"));
+    if (hasDuck) {return}
+    else if (div === null) {console.log("this is null"); setDiv(document.getElementById("duckspace")); return}
+    setHasDuck(true);
+    localDuckPos = [getRandomPosDuck(0), getRandomPosDuck(1)];
+  }, [div]);
+
   //let localImgResults = [backgroundPic1, backgroundPic2, backgroundPic3];
-  let localDuckPos = [Math.random()*(CONF_BACKGROUND_WIDTH - CONF_DUCK_WIDTH), Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT)];
+  
   //duck audio
   const quacks = [new Audio (quickquack), new Audio (doublequack)];
   const quack = quacks[Math.floor(Math.random()*quacks.length)];
@@ -68,9 +91,15 @@ function GamePresenter(props) {
 
   //useEffect
   useEffect(() => {
+    props.setNavbar(false);
     props.model.addObserver(() => { GetData(); });
     GetData();
     GameSource.searchImages(CONF_SEARCH).then((data)=>{setSearchResults(data); backgroundFunc(data); } );
+
+    return () => {
+      props.setNavbar(true);
+      props.model.removeObserver(() => { GetData(); });
+    };
   }, []);
 
   // flags[0] = boolean trigger rerender, flags[1] = boolean trigger restart
@@ -136,7 +165,7 @@ function GamePresenter(props) {
     //const scoreList = scoreSnapshot.docs.map(doc=>doc.data());
     if(props.model.firebaseData === null) { return; }
     const scoreList = props.model.firebaseData;
-    
+
     let highscore_length = 10;
     let highscore_list = [];
     let foundPersonalHighscore = !auth.currentUser;
@@ -149,7 +178,7 @@ function GamePresenter(props) {
       //If we still arent done with the highscore list we run this
       if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
       //If we found the personal highscore and the highscore list we leave
-      if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore(highscore_list); return; }
+      if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore([...highscore_list]); return; }
     });
   }
   

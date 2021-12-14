@@ -278,8 +278,27 @@ body{
 table{border-collapse:collapse;height:50px;}
 
 tr{border-bottom: 2px solid white;}
+.highscoreH1{
+  display:flex;
+  justify-content:center;
+  font-weight:bold;
+  color:gold;
+}
+.highscore1{
+  display:flex;
+  justify-content:center;
 
-
+}
+.highscore2{
+  font-weight:bold;
+  color:gold;
+  font-size:25px;
+}
+.highscore3{
+  font-weight:bold;
+  color:white;
+  font-size:25px;
+}
 
 /*--------funfact-----*/
 
@@ -289,7 +308,6 @@ tr{border-bottom: 2px solid white;}
   font-weight:bold;
   display:flex;
   justify-content:center;
-  padding:2em;
   animation:float 4s infinite linear;
   transform:translateY(0);
 }

@@ -24,6 +24,10 @@ function ProfilePresenter(props) {
     useEffect(() => {
         props.model.addObserver(() => { GetData(); });
         GetData();
+
+        return () => {
+            props.model.removeObserver(() => { GetData(); });
+        };
     }, []);
 
     function swap() {

@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import highscoreView from "../HighscoreView";
 
-
-function HighscorePresenter() {
-
-   
+function HighscorePresenter(props) {
 
     return (
         <div>

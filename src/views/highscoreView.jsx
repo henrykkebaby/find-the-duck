@@ -4,10 +4,13 @@ import "../styles.css";
 
 function HighscoreView(props) {
 
-   
-
     return (
+        <div>
+        <div className="highscore1">
+         <span className="highscore2">High</span><span className="highscore3">score</span>
+         </div>
         <div className="highscorecontainer">
+
            <table>
                 <thead>
                     <tr className="TrHead">
@@ -20,7 +23,7 @@ function HighscoreView(props) {
                 <tbody>
                     {props.highscore.map((object, index)=> {
                          return(
-                            <tr>
+                            <tr key={index}>
                             <td>{index+1}.</td>
                             <td>{object[1]}</td>
                             <td>{object[0]}</td>
@@ -33,6 +36,7 @@ function HighscoreView(props) {
 
            </table>
         </div>
+</div>
     )
 }
 

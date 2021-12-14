@@ -3,7 +3,7 @@ import NavbarView from '../views/navbarView';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 
-function NavbarPresenter() {
+function NavbarPresenter(props) {
 
     const [user, setUser] = useState({});
 
@@ -19,6 +19,7 @@ function NavbarPresenter() {
             <NavbarView
             user = {user}
             logout = {logout}
+            navbar = {props.navbar}
             />
         </div>
     )
