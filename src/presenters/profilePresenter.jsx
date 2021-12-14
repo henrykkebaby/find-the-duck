@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 //Firebase
 import { auth } from "../firebase/firebase-config";
-import { collection, getDocs, doc, updateDoc  } from "firebase/firestore/lite";
+import { doc, updateDoc  } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
-import { onAuthStateChanged} from "firebase/auth";
 
 function ProfilePresenter(props) {
 
@@ -17,9 +16,6 @@ function ProfilePresenter(props) {
 
     const defaultProfilePicture = "https://cdn.discordapp.com/attachments/911317330066292800/918091085165756426/duck.png";
     const alternativeProfilePicture = "https://cdn.discordapp.com/attachments/911317330066292800/918090235823407124/duck2.png";
-
-    const [user, setUser] = useState({});
-    onAuthStateChanged(auth, (currentUser) =>{ setUser(currentUser) })
 
     useEffect(() => {
         props.model.addObserver(() => { GetData(); });

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "../styles.css";
+import muted from '../localfiles/muted.png';
+import unmuted from '../localfiles/unmuted.png';
 
 function NavbarView(props) {
     return (
@@ -8,9 +10,9 @@ function NavbarView(props) {
             <nav className="Navbar">
                 
                 <Link to = "/" style={{ textDecoration: 'none', color:"#1a67ab" }}><h1>Find The Duck</h1></Link>
-
+                
                 <ul>
-                {props.navbar?
+                {props.showNav?
 
                     props.user?
         
@@ -29,6 +31,12 @@ function NavbarView(props) {
                     :
                     <li> <Link to = "/" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Exit Game</Link> </li>    
 
+                }
+
+                {props.isPlayingMusic?
+                <button input className="mute" onClick={() => { props.model.music.pause(); props.setIsPlayingMusic(false); } }><input className="mute" type ="image" src={unmuted} /></button>
+                :
+                <button input className="mute" onClick={() => { props.model.music.play(); props.setIsPlayingMusic(true); props.model.music.loop = true} }><input className="mute" type ="image" src={muted} /></button>
                 }
 
                 </ul>

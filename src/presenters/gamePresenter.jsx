@@ -15,10 +15,9 @@ import HighscoreView from '../views/highscoreView';
 //Firebase
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore/lite";
+import { doc, updateDoc } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
-
 
 function GamePresenter(props) {
 
@@ -30,37 +29,26 @@ function GamePresenter(props) {
   const CONF_BACKGROUND_WIDTH = 800;
   const CONF_DUCK_HEIGHT = 22;
   const CONF_DUCK_WIDTH = 20;
-
-
   
   //locals
- function getRandomPosDuck(rowOrCol){
-   if(document.getElementById("duckspace") != null){
-      if(rowOrCol === 0){
-        return Math.random()*(CONF_BACKGROUND_WIDTH - CONF_DUCK_WIDTH);
+  function getRandomPosDuck(rowOrCol){
+    if(document.getElementById("duckspace") != null){
+        if(rowOrCol === 0){
+          return Math.random()*(CONF_BACKGROUND_WIDTH - CONF_DUCK_WIDTH);
+        }
+        else{
+          return Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT) + document.getElementById("duckspace").getBoundingClientRect().top;
+        }
       }
-      else{
-        return Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT) + document.getElementById("duckspace").getBoundingClientRect().top;
-      }
-    }
- }
+    return Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT) + 70; 
+  }
+
   let localDuckPos = [getRandomPosDuck(0), getRandomPosDuck(1)];
-
-  const [hasDuck, setHasDuck] = useState(false);
-  const [div, setDiv] = useState(document.getElementById("duckspace"));
-  useEffect(() => {
-    //setDiv(document.getElementById("duckspace"));
-    if (hasDuck) {return}
-    else if (div === null) {console.log("this is null"); setDiv(document.getElementById("duckspace")); return}
-    setHasDuck(true);
-    localDuckPos = [getRandomPosDuck(0), getRandomPosDuck(1)];
-  }, [div]);
-
-  //let localImgResults = [backgroundPic1, backgroundPic2, backgroundPic3];
   
   //duck audio
   const quacks = [new Audio (quickquack), new Audio (doublequack)];
   const quack = quacks[Math.floor(Math.random()*quacks.length)];
+  
   //hooks
 
   //logic
@@ -79,6 +67,7 @@ function GamePresenter(props) {
   //game state
   const [showVid, setShowVid] = useState("");
   const [showEnd, setShowEnd] = useState("none");
+  const [showDuck, setShowDuck] = useState("none");
 
   //firebase hooks
   const [user, setUser] = useState({});
@@ -91,13 +80,13 @@ function GamePresenter(props) {
 
   //useEffect
   useEffect(() => {
-    props.setNavbar(false);
+    props.model.setShowNavCredentials(false);
     props.model.addObserver(() => { GetData(); });
     GetData();
     GameSource.searchImages(CONF_SEARCH).then((data)=>{setSearchResults(data); backgroundFunc(data); } );
 
     return () => {
-      props.setNavbar(true);
+      props.model.setShowNavCredentials(true);
       props.model.removeObserver(() => { GetData(); });
     };
   }, []);
@@ -160,9 +149,7 @@ function GamePresenter(props) {
   async function logout() { await signOut(auth); }
 
   const GetData = async ()=>{
-    //const scoreCol = collection(db, "scores");
-    //const scoreSnapshot = await getDocs(scoreCol);
-    //const scoreList = scoreSnapshot.docs.map(doc=>doc.data());
+
     if(props.model.firebaseData === null) { return; }
     const scoreList = props.model.firebaseData;
 
@@ -210,15 +197,15 @@ function GamePresenter(props) {
 
     if(state === 0) {
       setShowEnd("none");
+      setShowDuck("none");
       if(videoID === null) {
         const temp = document.getElementById("duck321");
         temp.play();
         setVideoID(temp);
       }
       else { videoID.play(); }
-      
-      setShowVid("");
 
+      setShowVid("");
       setTimerIsActive(false);
       return;
     }
@@ -226,6 +213,7 @@ function GamePresenter(props) {
     if(state === 1) {
       setShowVid("none");
       setShowEnd("none");
+      setShowDuck("");
       setSeconds(CONF_TIME);
       setTimerIsActive(true);
       return;
@@ -233,10 +221,10 @@ function GamePresenter(props) {
 
     if(state === 2) {
       setShowVid("none");
+      setShowDuck("none")
       setShowEnd("");
       setTimerIsActive(false);
       setSeconds(1337);
-      
       return;
     }
 
@@ -259,8 +247,8 @@ function GamePresenter(props) {
               width={CONF_BACKGROUND_WIDTH + "px"}
               duckHeight={CONF_DUCK_HEIGHT}
               duckWidth={CONF_DUCK_WIDTH}
-              //highscore={highscore}
               quack={quack}
+              showDuck={showDuck}
             />
             
             <GameStatsView
@@ -291,13 +279,10 @@ function GamePresenter(props) {
             <TimerView
               seconds = {seconds}
             />
-          <div style = {{position: "absolute", left: "800px"}}><HighscoreView
-            highscore = {highscore}
-            />
-          </div>
-          
-            
-            
+
+            <div style = {{position: "absolute", left: "800px"}}>
+              <HighscoreView highscore={highscore} />
+            </div>
   </div>
   )
 }

@@ -9,7 +9,7 @@ function ProfileView(props) {
                 {props.profilePic?
                 <img onClick={() => props.swap()} src={props.profilePic} style={{display:"block", marginLeft:"auto", marginRight:"auto", height:"82px", width:"70px"}} />
                 :
-                <img src  ="http://www.csc.kth.se/~cristi/loading.gif"></img>
+                <img src ="http://www.csc.kth.se/~cristi/loading.gif" />
                 }
                 <p>{props.profileName}</p>
                 <Link to = "/"> <button onClick={() => props.saveChanges()} style={{width:"100%"}}>Save Changes</button></Link>

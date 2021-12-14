@@ -1,8 +1,20 @@
 class Model{
 
-      constructor(observers=[], firebaseData=null){
+      constructor(observers=[], firebaseData=null, music=null, showNavbarCredentials=true){
             this.observers = observers;
             this.firebaseData = firebaseData;
+            this.music = music;
+            this.showNavbarCredentials = showNavbarCredentials;
+      }
+
+      setShowNavCredentials(bool) {
+            this.showNavbarCredentials = bool;
+            this.notifyObservers();
+      }
+
+      setMusic(music) {
+            this.music = music;
+            this.notifyObservers();
       }
 
       setfirebaseData(incomingData) {
