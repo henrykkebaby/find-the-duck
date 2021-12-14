@@ -10,17 +10,27 @@ function NavbarView(props) {
                 <Link to = "/" style={{ textDecoration: 'none', color:"#1a67ab" }}><h1>Find The Duck</h1></Link>
 
                 <ul>
-                    {props.user?(<div className = "test">   {/* FIXA !!!!!!!  */}
-                        {props.user.email}
-                        <li> <Link to = "/profile" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Profile</Link> </li>
-                        <li> <Link to = "/"><button onClick = {props.logout}>Sign out</button></Link> </li>
-                        </div>)
-                    : (
-                        <div className ="test">
-                        <li> <Link to = "/login" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Login</Link> </li>
-                        <li> <Link to = "/register" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Register</Link> </li>
-                        </div>
-                    )}
+                {props.navbar?
+
+                    props.user?
+        
+                        (
+                            <div className = "test">
+                            {props.user.email}
+                            <li> <Link to = "/profile" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Profile</Link> </li>
+                            <li> <Link to = "/"><button onClick = {props.logout}>Sign out</button></Link> </li>
+                            </div>
+                        ):(
+                            <div className ="test">
+                            <li> <Link to = "/login" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Login</Link> </li>
+                            <li> <Link to = "/register" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Register</Link> </li>
+                            </div>
+                        )
+                    :
+                    <li> <Link to = "/" style={{ textDecoration: 'none',  color:"#1a67ab" }}>Exit Game</Link> </li>    
+
+                }
+
                 </ul>
             </nav>
         </div>
@@ -28,3 +38,5 @@ function NavbarView(props) {
 }
 
 export default NavbarView;
+
+

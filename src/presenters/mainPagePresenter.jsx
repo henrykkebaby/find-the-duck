@@ -1,18 +1,62 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import MainPageView from "../views/mainPageView.jsx";
 import quickquack from '../sounds/quickquack.wav';
+import HighscoreView from '../views/highscoreView';
 import { onAuthStateChanged} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
+
 function MainPagePresenter(props) {
+
+    const [highscore, setHighscore] = useState([]);
     const [user, setUser] = useState({});
+    const [personalHighscore, setPersonalHighscore] = useState([0]);
     onAuthStateChanged(auth, (currentUser) =>{
       setUser(currentUser);
     })
 
+    useEffect(() => {
+        props.model.addObserver(() => { GetData(); });
+        GetData();
+
+        return () => {
+            props.model.removeObserver(() => { GetData(); });
+        };
+    }, []);
+
+
+    const GetData = async ()=>{
+        if(props.model.firebaseData === null) { return; }
+        const scoreList = props.model.firebaseData;
+
+        let highscore_length = 10;
+        let highscore_list = [];
+        let foundPersonalHighscore = !auth.currentUser;
+        if(scoreList.length < 10) { highscore_length = scoreList.length; }
+
+        scoreList.sort(compareScore).map(function(item) {
+
+            //If we are logged in we are searching for our personal highscore
+            if(!foundPersonalHighscore && item.person === auth.currentUser.email) {setPersonalHighscore(item.score); foundPersonalHighscore = true; }
+            //If we still arent done with the highscore list we run this
+            if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
+            //If we found the personal highscore and the highscore list we leave
+            if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore([...highscore_list]); return; }
+        });
+    }
+
+    function compareScore(a,b){
+        if(a.score < b.score) {return 1;}
+        if(a.score > b.score) {return -1;}
+        return 0;
+      }
+    
+
+
+
     var quack = new Audio (quickquack);
 
     const duckFactArray = [
-        "48% of people would rather fight a horse sized duck then 50 duck sized horses.",
+        "48% of people would rather fight a horse sized duck than 50 duck sized horses.",
         "A male duck is called a drake, and they started from the bottom now they here.",
         "Ducks can sleep with one eyed open to avoid being sneaked up upon.",
         "The highest flying duck was a mallard at 6400 meters.",
@@ -30,6 +74,10 @@ function MainPagePresenter(props) {
             <MainPageView
                 model={props.model} duckFact={duckFact} quack={quack} text = {user? "Play": "Guest"}
             />
+            <HighscoreView
+                 highscore = {highscore}
+            />
+
         </div>
     )
 }

@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import GameView from '../views/gameView';
 import TimerView from '../views/timerView';
+import EndscreenView from '../views/endscreenView';
+import GameStatsView from '../views/gameStatsView';
+import LoadscreenView from '../views/loadscreenView';
 import GameSource from "../gameSource";
 import duckPic from '../localfiles/duck.png';
 import duckLoad from '../localfiles/321duck.mp4';
 import promiseNoData from '../views/promiseNoData';
 import quickquack from '../sounds/quickquack.wav';
 import doublequack from '../sounds/doublequack.wav';
+import HighscoreView from '../views/highscoreView';
 
 //Firebase
-import {signOut} from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
-import { onAuthStateChanged} from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
 
 function GamePresenter(props) {
@@ -27,10 +31,33 @@ function GamePresenter(props) {
   const CONF_DUCK_HEIGHT = 22;
   const CONF_DUCK_WIDTH = 20;
 
-  //locals
+
   
+  //locals
+ function getRandomPosDuck(rowOrCol){
+   if(document.getElementById("duckspace") != null){
+      if(rowOrCol === 0){
+        return Math.random()*(CONF_BACKGROUND_WIDTH - CONF_DUCK_WIDTH);
+      }
+      else{
+        return Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT) + document.getElementById("duckspace").getBoundingClientRect().top;
+      }
+    }
+ }
+  let localDuckPos = [getRandomPosDuck(0), getRandomPosDuck(1)];
+
+  const [hasDuck, setHasDuck] = useState(false);
+  const [div, setDiv] = useState(document.getElementById("duckspace"));
+  useEffect(() => {
+    //setDiv(document.getElementById("duckspace"));
+    if (hasDuck) {return}
+    else if (div === null) {console.log("this is null"); setDiv(document.getElementById("duckspace")); return}
+    setHasDuck(true);
+    localDuckPos = [getRandomPosDuck(0), getRandomPosDuck(1)];
+  }, [div]);
+
   //let localImgResults = [backgroundPic1, backgroundPic2, backgroundPic3];
-  let localDuckPos = [Math.random()*(CONF_BACKGROUND_WIDTH - CONF_DUCK_WIDTH), Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT)];
+  
   //duck audio
   const quacks = [new Audio (quickquack), new Audio (doublequack)];
   const quack = quacks[Math.floor(Math.random()*quacks.length)];
@@ -64,9 +91,15 @@ function GamePresenter(props) {
 
   //useEffect
   useEffect(() => {
-    console.log("DuckPresenter Ready!");
+    props.setNavbar(false);
+    props.model.addObserver(() => { GetData(); });
     GetData();
     GameSource.searchImages(CONF_SEARCH).then((data)=>{setSearchResults(data); backgroundFunc(data); } );
+
+    return () => {
+      props.setNavbar(true);
+      props.model.removeObserver(() => { GetData(); });
+    };
   }, []);
 
   // flags[0] = boolean trigger rerender, flags[1] = boolean trigger restart
@@ -127,10 +160,12 @@ function GamePresenter(props) {
   async function logout() { await signOut(auth); }
 
   const GetData = async ()=>{
-    const scoreCol = collection(db, "scores");
-    const scoreSnapshot = await getDocs(scoreCol);
-    const scoreList = scoreSnapshot.docs.map(doc=>doc.data());
-    
+    //const scoreCol = collection(db, "scores");
+    //const scoreSnapshot = await getDocs(scoreCol);
+    //const scoreList = scoreSnapshot.docs.map(doc=>doc.data());
+    if(props.model.firebaseData === null) { return; }
+    const scoreList = props.model.firebaseData;
+
     let highscore_length = 10;
     let highscore_list = [];
     let foundPersonalHighscore = !auth.currentUser;
@@ -143,7 +178,7 @@ function GamePresenter(props) {
       //If we still arent done with the highscore list we run this
       if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
       //If we found the personal highscore and the highscore list we leave
-      if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore(highscore_list); return; }
+      if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore([...highscore_list]); return; }
     });
   }
   
@@ -157,7 +192,17 @@ function GamePresenter(props) {
 
     await updateDoc(doc(db, "scores", personString), { 
       score: score
-    }).then(() => GetData());
+    })
+
+    const scoreList = props.model.firebaseData;
+
+    scoreList.map(function(item) {
+      if(item.person === auth.currentUser.email) {
+          item.score = newScore;
+      }
+    });
+    
+    GetData();
   }
   //firebase --------------------------------------
 
@@ -204,10 +249,6 @@ function GamePresenter(props) {
   
   <div>
             <GameView 
-              duckLoad = {duckLoad}
-              gameStateHandler = {gameStateHandler}
-              showVid = {showVid}
-              showEnd = {showEnd}
               rerender={rerender}
               background={background}
               handleImgError= {() => backgroundFunc(searchResults)}
@@ -218,17 +259,45 @@ function GamePresenter(props) {
               width={CONF_BACKGROUND_WIDTH + "px"}
               duckHeight={CONF_DUCK_HEIGHT}
               duckWidth={CONF_DUCK_WIDTH}
-              logout = {logout}
-              score={score}
-              round={round}
-              roundMAX={CONF_ROUND}
-              highscore={highscore}
-              personalHighscore={personalHighscore}
+              //highscore={highscore}
               quack={quack}
             />
+            
+            <GameStatsView
+               roundMAX={CONF_ROUND}
+               round={round}
+               score={score}
+               personalHighscore={personalHighscore}
+            />
+
+            <EndscreenView
+              showEnd = {showEnd}
+              height={CONF_BACKGROUND_HEIGHT + "px"}
+              width={CONF_BACKGROUND_WIDTH + "px"}
+              roundMAX={CONF_ROUND}
+              score={score}
+              personalHighscore={personalHighscore}
+              rerender={rerender}
+            />
+
+            <LoadscreenView
+               showVid = {showVid}
+               height={CONF_BACKGROUND_HEIGHT + "px"}
+               width={CONF_BACKGROUND_WIDTH + "px"}
+               gameStateHandler = {gameStateHandler}
+               duckLoad = {duckLoad}
+            />
+            
             <TimerView
               seconds = {seconds}
             />
+          <div style = {{position: "absolute", left: "800px"}}><HighscoreView
+            highscore = {highscore}
+            />
+          </div>
+          
+            
+            
   </div>
   )
 }

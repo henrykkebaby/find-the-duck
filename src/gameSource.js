@@ -1,6 +1,6 @@
 const  GameSource={   // JS object creation literal
     apiCall(params) {
-    return fetch("https://bing-image-search1.p.rapidapi.com/images/"+params, {
+    return fetch(process.env.REACT_APP_BING_KEY+params, {
              "method": "GET",              // HTTP method
              "headers": {                  // HTTP headers
                 "x-rapidapi-host": "bing-image-search1.p.rapidapi.com",

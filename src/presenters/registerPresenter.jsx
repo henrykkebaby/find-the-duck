@@ -23,6 +23,8 @@ function RegisterPresenter(props) {
       person: person,
       score: 0
     });
+
+    props.model.addFirebaseData({person:person, score:0});
   }
 
   async function register(key){
