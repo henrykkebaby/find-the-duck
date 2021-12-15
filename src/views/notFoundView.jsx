@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import quickquack from '../sounds/quickquack.wav';
 import duckpic from '../localfiles/duck.png';
+import "../styles.css";
 
 function NotFoundView(props) {
 
@@ -9,8 +10,8 @@ function NotFoundView(props) {
 
     return (
         <div style={{backgroundColor:"#1a67ab"}}>
-            <p style={{color:"white", fontSize:"70px"}}>404 Not Found</p>
-            <img src={duckpic} width="120px" height="120px" />
+            <p id = "errorText" >404 Not Found</p>
+            <img src={duckpic} width="120px" height="120px" alt="duck" />
             <br />
             <br />
             <br />

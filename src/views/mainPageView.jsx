@@ -5,23 +5,23 @@ import "../styles.css";
 function MainPageView(props) {
     return (
         <div>
-        <div className = "mainPageContainer">
-   
+            <div className = "mainPageContainer">
+    
                 <button className="mainbtn" onClick={() => props.quack.play()}>
                     <div>
                             <span></span>
-                     <Link to = "/game">{props.text}</Link>
-                     </div>
+                    <Link to = "/game">{props.text}</Link>
+                    </div>
                 </button>
 
                 <button className="mainbtn">
                     <div>
                             <span></span>
-                     <Link to = "/tutorial"> How to </Link>
-                     </div>
+                    <Link to = "/tutorial"> How to </Link>
+                    </div>
                 </button>
 
-        </div>
+            </div>
             <p className="funFact"> {props.duckFact} </p>
         </div>
     )

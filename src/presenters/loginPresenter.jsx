@@ -5,7 +5,6 @@ import LoginView from "../views/loginView";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 
-
 function LoginPresenter(props) {
 
   const navigate = useNavigate();
@@ -19,9 +18,9 @@ function LoginPresenter(props) {
     setUser(currentUser);
   })
 
+  async function login(key) {
 
-  async function login(key){
-    if(key === null || key.code !== "Enter" && key !== "clicked") {
+    if((key === null) || (key.code !== "Enter" && key !== "clicked")) {
       return;
     }
   

@@ -7,9 +7,11 @@ import { auth } from "../firebase/firebase-config";
 
 function MainPagePresenter(props) {
 
+    var quack = new Audio (quickquack);
+
     const [highscore, setHighscore] = useState([]);
     const [user, setUser] = useState({});
-    const [personalHighscore, setPersonalHighscore] = useState([0]);
+
     onAuthStateChanged(auth, (currentUser) =>{
       setUser(currentUser);
     })
@@ -30,17 +32,13 @@ function MainPagePresenter(props) {
 
         let highscore_length = 10;
         let highscore_list = [];
-        let foundPersonalHighscore = !auth.currentUser;
         if(scoreList.length < 10) { highscore_length = scoreList.length; }
 
-        scoreList.sort(compareScore).map(function(item) {
-
-            //If we are logged in we are searching for our personal highscore
-            if(!foundPersonalHighscore && item.person === auth.currentUser.email) {setPersonalHighscore(item.score); foundPersonalHighscore = true; }
+        scoreList.sort(compareScore).forEach(function(item) {
             //If we still arent done with the highscore list we run this
             if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
             //If we found the personal highscore and the highscore list we leave
-            if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore([...highscore_list]); return; }
+            if(highscore_length <= 0) { setHighscore([...highscore_list]); return; }
         });
     }
 
@@ -48,12 +46,7 @@ function MainPagePresenter(props) {
         if(a.score < b.score) {return 1;}
         if(a.score > b.score) {return -1;}
         return 0;
-      }
-    
-
-
-
-    var quack = new Audio (quickquack);
+    }
 
     const duckFactArray = [
         "48% of people would rather fight a horse sized duck than 50 duck sized horses.",
