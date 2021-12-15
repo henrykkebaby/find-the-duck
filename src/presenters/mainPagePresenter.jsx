@@ -34,7 +34,7 @@ function MainPagePresenter(props) {
         let highscore_list = [];
         if(scoreList.length < 10) { highscore_length = scoreList.length; }
 
-        scoreList.sort(compareScore).map(function(item) {
+        scoreList.sort(compareScore).forEach(function(item) {
             //If we still arent done with the highscore list we run this
             if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
             //If we found the personal highscore and the highscore list we leave

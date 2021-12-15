@@ -273,7 +273,7 @@ body{
     font-size: 20px;
     margin: 0 auto;
     height: auto;
-    width:550px;
+    width:660px;
     box-shadow: inset 0 0 10px #000;
     display:flex;
     justify-content:center;
@@ -307,6 +307,11 @@ tr{border-bottom: 2px solid white;}
   font-size:25px;
 }
 
+.highscorebox{
+  position: absolute;
+  left:840px;
+}
+
 /*--------funfact-----*/
 
 .funFact{
@@ -332,3 +337,104 @@ tr{border-bottom: 2px solid white;}
 }
 .gameStat{color:white;
 box-shadow: inset 0 0 10px gold;}
+
+.timerText{
+  position:absolute;
+  top:590px; 
+  user-select:none;
+  color: white;
+  left:840px;
+}
+
+#endscreenText{
+  font-size: 50px;
+  
+}
+
+
+#roundText{
+  position: absolute; 
+  top: 510px;
+  user-select:none;
+  left:840px;
+}
+
+#scoreText{
+  position:absolute;
+  top:550px;
+  user-select:none;
+  left:840px;
+}
+
+#personalText{
+  position:absolute;
+  top:630px;
+  user-select:none;
+  left:840px;
+}
+
+#duckspace{
+
+  position:absolute; 
+  user-select:none;
+}
+
+
+#errorText{
+  color: white; 
+  font-size:70px;
+}
+
+.profileImg{
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  height:82px;
+  width:70px;
+
+}
+
+.profileBackground{
+  position:absolute; 
+  left:65%;
+  border:5px solid yellow;
+  background-color:lightgrey;
+}
+
+
+@media (max-width: 1050px){ 
+  .highscorebox{ 
+    position: absolute;
+    top:820px;
+    left: 0px;
+    overflow: auto;
+      }
+
+    .timerText{
+      position: absolute;
+      left:0px;
+      top:730px;
+      overflow: auto;
+    }
+    
+    #roundText{
+      position: absolute;
+      left: 0px;
+      top: 690px;
+      overflow: auto;
+    }
+
+    #scoreText{
+      position: absolute;
+      left: 0px;
+      top: 710px;
+      overflow: auto;
+    }
+    
+    #personalText{
+      position: absolute;
+      left: 0px;
+      top: 750px;
+      overflow: auto;
+    }
+}

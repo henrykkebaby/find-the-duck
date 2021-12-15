@@ -21,16 +21,16 @@ function RegisterPresenter(props) {
 
     await setDoc(doc(db, "scores", personString), { 
       person: person,
-      score: 0
+      score: -Infinity
     });
 
-    props.model.addFirebaseData({person:person, score:0});
+    props.model.addFirebaseData({person:person, score:-Infinity});
   }
 
   async function register(key){
    
     
-    if(key === null || key.code !== "Enter" && key !== "clicked") {
+    if((key === null) || (key.code !== "Enter" && key !== "clicked")) {
       return;
     }
       

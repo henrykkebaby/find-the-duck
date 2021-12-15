@@ -13,18 +13,19 @@ import doublequack from '../sounds/doublequack.wav';
 import HighscoreView from '../views/highscoreView';
 
 //Firebase
-import { signOut } from "firebase/auth";
+//import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 import { doc, updateDoc } from "firebase/firestore/lite";
 import { db } from "../firebase/firebase-config";
-import { onAuthStateChanged } from "firebase/auth";
+// import { onAuthStateChanged } from "firebase/auth";
 
 function GamePresenter(props) {
 
   //config
-  const CONF_ROUND = 3;
-  const CONF_TIME = 15;
-  const CONF_SEARCH = "ducks";
+  const CONF_ROUND = 5;
+  const CONF_TIME = 30;
+  const CONF_SEARCH = "find waldo hard";
+  const CONF_BLOCKED_SEARCH = [30, 8, 12, 34];
   const CONF_BACKGROUND_HEIGHT = 600;
   const CONF_BACKGROUND_WIDTH = 800;
   const CONF_DUCK_HEIGHT = 22;
@@ -42,8 +43,6 @@ function GamePresenter(props) {
       }
     return Math.random()*(CONF_BACKGROUND_HEIGHT - CONF_DUCK_HEIGHT) + 70; 
   }
-
-  let localDuckPos = [getRandomPosDuck(0), getRandomPosDuck(1)];
   
   //duck audio
   const quacks = [new Audio (quickquack), new Audio (doublequack)];
@@ -52,12 +51,12 @@ function GamePresenter(props) {
   //hooks
 
   //logic
-  const [duckPosX, setDuckPosX] = useState(localDuckPos[0]);
-  const [duckPosY, setDuckPosY] = useState(localDuckPos[1]);
+  const [duckPosX, setDuckPosX] = useState(getRandomPosDuck(0));
+  const [duckPosY, setDuckPosY] = useState(getRandomPosDuck(1));
   const [round, setRound] = useState(1);
   const [score, setScore] = useState(0);
   const [highscore, setHighscore] = useState([]);
-  const [personalHighscore, setPersonalHighscore] = useState([0]);
+  const [personalHighscore, setPersonalHighscore] = useState([-Infinity]);
 
   //cache
   const [videoID, setVideoID] = useState(null);
@@ -70,11 +69,17 @@ function GamePresenter(props) {
   const [showDuck, setShowDuck] = useState("none");
 
   //firebase hooks
-  const [user, setUser] = useState({});
+  //const [user, setUser] = useState({});
 
   function backgroundFunc(data) {
-    let newBackground = data[Math.floor(Math.random()*data.length)];
-    while(newBackground.contentUrl === null) { newBackground = data[Math.floor(Math.random()*data.length)]; }
+    let rand = Math.floor(Math.random()*data.length);
+    let newBackground = data[rand];
+    if (CONF_BLOCKED_SEARCH.includes(rand)) { newBackground.contentUrl = null; }
+    while(newBackground.contentUrl === null) {
+      rand = Math.floor(Math.random()*data.length);
+      newBackground = data[rand];
+      if (CONF_BLOCKED_SEARCH.includes(rand)) { newBackground.contentUrl = null; }
+    }
     setBackground(newBackground.contentUrl);
   }
 
@@ -105,8 +110,8 @@ function GamePresenter(props) {
       }
       
       backgroundFunc(searchResults);
-      setDuckPosX(localDuckPos[0]);
-      setDuckPosY(localDuckPos[1]);
+      setDuckPosX(getRandomPosDuck(0));
+      setDuckPosY(getRandomPosDuck(1));
       gameStateHandler(0);
       setSeconds(CONF_TIME);
 
@@ -144,9 +149,9 @@ function GamePresenter(props) {
   }
 
   //firebase --------------------------------------
-  onAuthStateChanged(auth, (currentUser) =>{ setUser(currentUser) })
+  //onAuthStateChanged(auth, (currentUser) =>{ setUser(currentUser) })
 
-  async function logout() { await signOut(auth); }
+  // async function logout() { await signOut(auth); }
 
   const GetData = async ()=>{
 
@@ -158,12 +163,12 @@ function GamePresenter(props) {
     let foundPersonalHighscore = !auth.currentUser;
     if(scoreList.length < 10) { highscore_length = scoreList.length; }
 
-    scoreList.sort(compareScore).map(function(item) {
+    scoreList.sort(compareScore).forEach(function(item) {
 
       //If we are logged in we are searching for our personal highscore
       if(!foundPersonalHighscore && item.person === auth.currentUser.email) {setPersonalHighscore(item.score); foundPersonalHighscore = true; }
       //If we still arent done with the highscore list we run this
-      if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1; }
+      if(highscore_length > 0) { highscore_list.push([item.person, item.score]); highscore_length = highscore_length - 1;}
       //If we found the personal highscore and the highscore list we leave
       if(highscore_length <= 0 && foundPersonalHighscore) { setHighscore([...highscore_list]); return; }
     });
@@ -183,7 +188,7 @@ function GamePresenter(props) {
 
     const scoreList = props.model.firebaseData;
 
-    scoreList.map(function(item) {
+    scoreList.forEach(function(item) {
       if(item.person === auth.currentUser.email) {
           item.score = newScore;
       }
@@ -224,7 +229,7 @@ function GamePresenter(props) {
       setShowDuck("none")
       setShowEnd("");
       setTimerIsActive(false);
-      setSeconds(1337);
+      setSeconds(CONF_TIME);
       return;
     }
 
@@ -280,7 +285,7 @@ function GamePresenter(props) {
               seconds = {seconds}
             />
 
-            <div style = {{position: "absolute", left: "800px"}}>
+            <div className="highscorebox">
               <HighscoreView highscore={highscore} />
             </div>
   </div>

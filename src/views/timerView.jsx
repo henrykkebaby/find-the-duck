@@ -1,9 +1,10 @@
 import React from 'react';
+import "../styles.css"
 
 function TimerView(props) {
   return (
     <div >
-      <p style={{position:"absolute", top:"750px", userSelect:"none"}} >TIME {props.seconds}s</p>
+      <p className = "timerText" >TIME {props.seconds}s</p>
     </div>
     
   );
