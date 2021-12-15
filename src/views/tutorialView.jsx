@@ -3,7 +3,11 @@ import "../styles.css"
 import howto from '../localfiles/howto.mp4';
 function TutorialView(props) {
     return  <div className = "tutorialContainer">
-                 <video id="howto" autoPlay muted className="tutorialVideo"> <source src= {howto} type="video/mp4"/> </video>
+                {howto?
+                <video id="howto" autoPlay muted className="tutorialVideo"> <source src= {howto} type="video/mp4"/> </video>
+                :
+                <img src ="http://www.csc.kth.se/~cristi/loading.gif"  alt="spinner"/>
+                }
                 <h1 className="tutorialTitle">How to play the game (Text-edition)</h1>
                 <p>Each game is played in 5 rounds</p>
                 <p>In each round, you have 15 seconds to find the duck in the picture</p>
